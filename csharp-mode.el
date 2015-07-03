@@ -4041,36 +4041,38 @@ The return value is meaningless, and is ignored by cc-mode.
    "warning [[:alnum:]]+: .+$")
   "Regexp to match compilation warning from xbuild.")
 
+(defcustom csharp-mode-use-msbuild-compilation-regex t "whether use csharp-mode's regex")
 (eval-after-load 'compile
   (lambda ()
-    (dolist
-        (regexp
-         `((xbuild-error
-            ,csharp-compilation-re-xbuild-error
-            1 2 3 2)
-           (xbuild-warning
-            ,csharp-compilation-re-xbuild-warning
-            1 2 3 1)
-           (msbuild-error
-            ,csharp-compilation-re-msbuild-error
-            csharp--compilation-error-file-resolve
-            2
-            3
-            2
-            nil
-            (1 compilation-error-face)
-            (4 compilation-error-face))
-           (msbuild-warning
-            ,csharp-compilation-re-msbuild-warning
-            csharp--compilation-error-file-resolve
-            2
-            3
-            1
-            nil
-            (1 compilation-warning-face)
-            (4 compilation-warning-face))))
-      (add-to-list 'compilation-error-regexp-alist-alist regexp)
-      (add-to-list 'compilation-error-regexp-alist (car regexp)))))
+    (when csharp-mode-use-msbuild-compilation-regex
+      (dolist
+          (regexp
+           `((xbuild-error
+              ,csharp-compilation-re-xbuild-error
+              1 2 3 2)
+             (xbuild-warning
+              ,csharp-compilation-re-xbuild-warning
+              1 2 3 1)
+             (msbuild-error
+              ,csharp-compilation-re-msbuild-error
+              csharp--compilation-error-file-resolve
+              2
+              3
+              2
+              nil
+              (1 compilation-error-face)
+              (4 compilation-error-face))
+             (msbuild-warning
+              ,csharp-compilation-re-msbuild-warning
+              csharp--compilation-error-file-resolve
+              2
+              3
+              1
+              nil
+              (1 compilation-warning-face)
+              (4 compilation-warning-face))))
+        (add-to-list 'compilation-error-regexp-alist-alist regexp)
+        (add-to-list 'compilation-error-regexp-alist (car regexp))))))
 
 ;;; Autoload mode trigger
 ;;;###autoload
